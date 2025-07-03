@@ -37,6 +37,13 @@ import { useEffect, useMemo } from "react";
 
 type TaskType = "FOLLOW_USER" | "LIKE_CAST" | "RECAST_CAST" | "JOIN_CHANNEL";
 
+interface TaskTargetData {
+  userToFollow?: string;
+  castHashToLike?: string;
+  channelToJoin?: string;
+  castHashToRecast?: string;
+}
+
 interface Task {
   id: number;
   title: string;
@@ -47,7 +54,8 @@ interface Task {
   currentParticipants: number;
   expiresAt: string;
   status: string;
-  targetData: any;
+  targetData: TaskTargetData;
+  requiredActions?: number;
 }
 
 interface UserTask {
@@ -58,46 +66,55 @@ interface UserTask {
   canClaim: boolean;
 }
 
-// Mock data - replace with actual API calls
+// Mock data - define mockTasks first
 const mockTasks: Task[] = [
   {
     id: 1,
-    title: "Follow @buildwithbase",
-    description: "Follow the official Base account to earn rewards",
+    title: "Complete Base Ecosystem Tasks",
+    description: "Follow @buildwithbase AND recast their latest announcement",
     taskType: "FOLLOW_USER",
-    rewardPerParticipant: "0.001",
-    maxParticipants: 100,
-    currentParticipants: 47,
+    rewardPerParticipant: "0.002",
+    maxParticipants: 50,
+    currentParticipants: 23,
     expiresAt: "2025-07-10T12:00:00Z",
     status: "ACTIVE",
-    targetData: { userToFollow: "buildwithbase" }
+    targetData: {
+      userToFollow: "buildwithbase",
+      castHashToRecast: "0x456def..."
+    },
+    requiredActions: 2
   },
   {
     id: 2,
-    title: "Like the Base announcement cast",
-    description: "Like the latest Base ecosystem update to earn ETH",
-    taskType: "LIKE_CAST",
-    rewardPerParticipant: "0.0015",
-    maxParticipants: 200,
-    currentParticipants: 89,
-    expiresAt: "2025-07-08T18:00:00Z",
+    title: "Join Base Community",
+    description: "Join the Base community channel",
+    taskType: "JOIN_CHANNEL",
+    rewardPerParticipant: "0.001",
+    maxParticipants: 100,
+    currentParticipants: 45,
+    expiresAt: "2025-07-15T12:00:00Z",
     status: "ACTIVE",
-    targetData: { castHashToLike: "0x123abc..." }
+    targetData: {
+      channelToJoin: "base"
+    }
   },
   {
     id: 3,
-    title: "Join /onchainkit channel",
-    description: "Join the OnchainKit channel and engage with the community",
-    taskType: "JOIN_CHANNEL",
-    rewardPerParticipant: "0.002",
-    maxParticipants: 50,
-    currentParticipants: 12,
-    expiresAt: "2025-07-15T12:00:00Z",
+    title: "Like Community Cast",
+    description: "Like the latest Base ecosystem update",
+    taskType: "LIKE_CAST",
+    rewardPerParticipant: "0.001",
+    maxParticipants: 75,
+    currentParticipants: 30,
+    expiresAt: "2025-07-20T12:00:00Z",
     status: "ACTIVE",
-    targetData: { channelToJoin: "onchainkit" }
+    targetData: {
+      castHashToLike: "0x789ghi..."
+    }
   }
 ];
 
+// Then define mockUserTasks using the tasks above
 const mockUserTasks: UserTask[] = [
   {
     id: 1,
@@ -595,17 +612,18 @@ export default function App() {
     setFrameAdded(Boolean(frameAdded));
   }, [addFrame]);
 
-  // Simulate joining a task
   const handleJoinTask = useCallback(async (taskId: number) => {
+    console.log(`Joining task ${taskId}`);
     setNotification("🎉 Successfully joined task! Complete the action to earn rewards.");
     setTimeout(() => setNotification(null), 3000);
   }, []);
 
   // Simulate claiming rewards
-  const handleClaimReward = useCallback(async (taskId: number) => {
-    setNotification("💰 Claim transaction initiated! Check your wallet.");
-    setTimeout(() => setNotification(null), 3000);
-  }, []);
+const handleClaimReward = useCallback(async (taskId: number) => {
+  console.log(`Claiming reward for task ${taskId}`);
+  setNotification("💰 Claim transaction initiated! Check your wallet.");
+  setTimeout(() => setNotification(null), 3000);
+}, []);
 
   const getUserTask = (taskId: number) => {
     return mockUserTasks.find(ut => ut.task.id === taskId);
