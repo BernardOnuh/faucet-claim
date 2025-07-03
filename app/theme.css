@@ -18,6 +18,7 @@
   --app-card-border: rgba(0, 0, 0, 0.1);
 }
 
+
 @media (prefers-color-scheme: dark) {
   :root {
     --app-background: #111111;
