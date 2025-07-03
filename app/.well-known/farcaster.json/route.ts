@@ -14,20 +14,19 @@ function withValidProperties(
 export async function GET() {
   const URL = process.env.NEXT_PUBLIC_URL;
   return Response.json({
-  "accountAssociation": {
-    "header": "eyJmaWQiOjEwMjczNzgsInR5cGUiOiJhdXRoIiwia2V5IjoiMHhkMDg1MDE2QTY2Q2VlMGM5OUZjNjYwY0NDRGQ2NmNiNURkNTQxMDM0In0",
-    "payload": "eyJkb21haW4iOiJmYXVjZXQtY2xhaW0udmVyY2VsLmFwcCJ9",
-    "signature": "yJfsHvOPtdDEdyBPLG0dhOdAzmTYVCpd7m6PlPUWdslaaMnHz46akmN8mNV/v5k2sLWUiqu1c+7S8lU4QOzM0Rs="
-  }
-}
-
-  // return Response.json({
-  //   accountAssociation: {
-  //     header: process.env.FARCASTER_HEADER,
-  //     payload: process.env.FARCASTER_PAYLOAD,
-  //     signature: process.env.FARCASTER_SIGNATURE,
-  //   },
-
+    "accountAssociation": {
+      "header": "eyJmaWQiOjEwMjczNzgsInR5cGUiOiJhdXRoIiwia2V5IjoiMHhkMDg1MDE2QTY2Q2VlMGM5OUZjNjYwY0NDRGQ2NmNiNURkNTQxMDM0In0",
+      "payload": "eyJkb21haW4iOiJmYXVjZXQtY2xhaW0udmVyY2VsLmFwcCJ9",
+      "signature": "yJfsHvOPtdDEdyBPLG0dhOdAzmTYVCpd7m6PlPUWdslaaMnHz46akmN8mNV/v5k2sLWUiqu1c+7S8lU4QOzM0Rs="
+    }, // <- Added missing comma here
+    
+    // return Response.json({
+    //   accountAssociation: {
+    //     header: process.env.FARCASTER_HEADER,
+    //     payload: process.env.FARCASTER_PAYLOAD,
+    //     signature: process.env.FARCASTER_SIGNATURE,
+    //   },
+    
     frame: withValidProperties({
       version: "1",
       name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
