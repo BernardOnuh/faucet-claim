@@ -27,24 +27,19 @@ export async function GET() {
     //     signature: process.env.FARCASTER_SIGNATURE,
     //   },
     
-    frame: withValidProperties({
+    frame: {
+      name: "faucet earn",
       version: "1",
-      name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
-      subtitle: process.env.NEXT_PUBLIC_APP_SUBTITLE,
-      description: process.env.NEXT_PUBLIC_APP_DESCRIPTION,
-      screenshotUrls: [],
-      iconUrl: process.env.NEXT_PUBLIC_APP_ICON,
-      splashImageUrl: process.env.NEXT_PUBLIC_APP_SPLASH_IMAGE,
-      splashBackgroundColor: process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR,
-      homeUrl: URL,
-      webhookUrl: `${URL}/api/webhook`,
-      primaryCategory: process.env.NEXT_PUBLIC_APP_PRIMARY_CATEGORY,
-      tags: [],
-      heroImageUrl: process.env.NEXT_PUBLIC_APP_HERO_IMAGE,
-      tagline: process.env.NEXT_PUBLIC_APP_TAGLINE,
-      ogTitle: process.env.NEXT_PUBLIC_APP_OG_TITLE,
-      ogDescription: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION,
-      ogImageUrl: process.env.NEXT_PUBLIC_APP_OG_IMAGE,
-    }),
+      iconUrl: "https://faucet-claim.vercel.app/icon.png",
+      homeUrl: "https://faucet-claim.vercel.app",
+      imageUrl: "https://faucet-claim.vercel.app/image.png",
+      buttonTitle: "claim",
+      splashImageUrl: "https://faucet-claim.vercel.app/splash.png",
+      splashBackgroundColor: "#ffffff",
+      webhookUrl: "https://faucet-claim.vercel.app/api/webhook",
+      primaryCategory: "utility",
+      description: "facuet ",
+      subtitle: "a facuet"
+    },
   });
 }
