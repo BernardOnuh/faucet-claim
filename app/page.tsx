@@ -37,24 +37,26 @@ import { useEffect, useMemo } from "react";
 
 type TaskType = "FOLLOW_USER" | "LIKE_CAST" | "RECAST_CAST" | "JOIN_CHANNEL";
 
+interface TaskTargetData {
+  userToFollow?: string;
+  castHashToLike?: string;
+  channelToJoin?: string;
+  castHashToRecast?: string;
+}
+
 interface Task {
   id: number;
   title: string;
   description: string;
-  taskTypes: TaskType[]; // Changed from single taskType to array
+  taskType: TaskType;
   rewardPerParticipant: string;
   maxParticipants: number;
   currentParticipants: number;
   expiresAt: string;
   status: string;
-  targetData: {
-    userToFollow?: string;
-    channelToJoin?: string;
-    castHashToLike?: string;
-    castHashToRecast?: string;
-  };
-  requiredActions: number; // How many actions need to be completed
-};
+  targetData: TaskTargetData;
+  requiredActions?: number; // Optional property added
+}
 
 interface UserTask {
   id: number;
@@ -64,13 +66,14 @@ interface UserTask {
   canClaim: boolean;
 }
 
+
 // Mock data - replace with actual API calls
 const mockTasks: Task[] = [
   {
     id: 1,
     title: "Complete Base Ecosystem Tasks",
     description: "Follow @buildwithbase AND recast their latest announcement",
-    taskTypes: ["FOLLOW_USER", "RECAST_CAST"],
+    taskType: "FOLLOW_USER",
     rewardPerParticipant: "0.002", // Higher reward for multiple actions
     maxParticipants: 50,
     currentParticipants: 23,
@@ -86,7 +89,7 @@ const mockTasks: Task[] = [
     id: 1,
     title: "Complete Base Ecosystem Tasks",
     description: "Follow @buildwithbase AND recast their latest announcement",
-    taskTypes: ["FOLLOW_USER", "RECAST_CAST"],
+    taskType: "FOLLOW_USER",
     rewardPerParticipant: "0.002", // Higher reward for multiple actions
     maxParticipants: 50,
     currentParticipants: 23,
@@ -102,7 +105,7 @@ const mockTasks: Task[] = [
     id: 1,
     title: "Complete Base Ecosystem Tasks",
     description: "Follow @buildwithbase AND recast their latest announcement",
-    taskTypes: ["FOLLOW_USER", "RECAST_CAST"],
+    taskType: "FOLLOW_USER",
     rewardPerParticipant: "0.002", // Higher reward for multiple actions
     maxParticipants: 50,
     currentParticipants: 23,
@@ -340,9 +343,7 @@ function TaskCard({ task, userTask, onJoin, onClaim }: {
     <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 space-y-3">
       <div className="flex items-start justify-between">
         <div className="flex items-center space-x-3">
-          {task.taskTypes.map((type) => (
-            <TaskTypeIcon key={type} type={type} />
-          ))}
+          <TaskTypeIcon type={task.taskType} />
           <div className="flex-1 min-w-0">
             <h3 className="text-white font-semibold text-sm truncate">{task.title}</h3>
             <p className="text-gray-400 text-xs mt-1">{task.description}</p>
@@ -421,7 +422,7 @@ function UserStats() {
 
 // Todo List component
 function TodoList() {
-  const [todos, setTodos] = useState([
+  const [todos, setTodos] = useState<Array<{id: number, text: string, completed: boolean}>>([
     { id: 1, text: "Learn about MiniKit", completed: false },
     { id: 2, text: "Build a Mini App", completed: true },
     { id: 3, text: "Deploy to Base and go viral", completed: false },
@@ -791,22 +792,25 @@ export default function App() {
 
   // Simulate joining a task
   const handleJoinTask = useCallback(async (taskId: number) => {
+    console.log(`Joining task ${taskId}`);
     setNotification("🎉 Successfully joined task! Complete the action to earn rewards.");
     setTimeout(() => setNotification(null), 3000);
   }, []);
 
   // Simulate claiming rewards
   const handleClaimReward = useCallback(async (taskId: number) => {
+    console.log(`Claiming reward for task ${taskId}`);
     setNotification("💰 Claim transaction initiated! Check your wallet.");
     setTimeout(() => setNotification(null), 3000);
   }, []);
 
   // Create new task
-  const handleCreateTask = useCallback(async (taskData: Partial<Task>) => {
-    setNotification("✅ Task created successfully on Base!");
-    setShowCreateForm(false);
-    setTimeout(() => setNotification(null), 3000);
-  }, []);
+ const handleCreateTask = useCallback(async (taskData: Partial<Task>) => {
+  console.log(`Creating task:`, taskData); // Use the parameter
+  setNotification("✅ Task created successfully on Base!");
+  setShowCreateForm(false);
+  setTimeout(() => setNotification(null), 3000);
+}, []);
 
   const getUserTask = (taskId: number) => {
     return mockUserTasks.find(ut => ut.task.id === taskId);
