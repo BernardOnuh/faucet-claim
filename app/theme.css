@@ -12,9 +12,9 @@
   --app-accent-hover: #0047e1;
   --app-accent-active: #003db8;
   --app-accent-light: #e6edff;
-  --app-gray: #f5f5f5;
+  --app-gray: #636363;
   --app-gray-dark: #e0e0e0;
-  --app-card-bg: rgba(255, 255, 255, 0.4);
+  --app-card-bg: rgba(234, 234, 234, 0.4);
   --app-card-border: rgba(0, 0, 0, 0.1);
 }
 
